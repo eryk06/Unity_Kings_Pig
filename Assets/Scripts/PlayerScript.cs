@@ -1,4 +1,6 @@
 using UnityEngine;
+using TMPro;
+using System.Text;
 
 public class PlayerScript : MonoBehaviour
 {
@@ -7,6 +9,10 @@ public class PlayerScript : MonoBehaviour
     public bool isNen;
     private new Rigidbody2D rigidbody2D;
     public bool isRight;
+    public AudioClip diamondClip;
+    private int countPoint = 0;
+    public TMP_Text txtDiamond;
+    private AudioSource audioSource;
 
     // animator
     private Animator animator;
@@ -16,7 +22,8 @@ public class PlayerScript : MonoBehaviour
         isALive = true;
         rigidbody2D = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
-
+        audioSource = GetComponent<AudioSource>();
+        txtDiamond.text = countPoint + " x";
     }
 
   // Update is called once per frame
@@ -76,5 +83,22 @@ public class PlayerScript : MonoBehaviour
         {
             isNen = true;
         }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision) {
+      var name = collision.gameObject.tag;
+        if (name.Equals("Diamond"))
+        {
+            countPoint += 10;
+            txtDiamond.text = countPoint + " x";
+            PlayClip(diamondClip);
+            // xóa mất kim cương
+            Destroy(collision.gameObject);
+        }
+    }
+
+    private void PlayClip(AudioClip clip)
+    {
+        audioSource.PlayOneShot(clip);
     }
 }

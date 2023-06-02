@@ -2,12 +2,19 @@
 
 public class monterBoob : MonoBehaviour
 {
+  Collider2D objectCollider;
+  private new Rigidbody2D rigidbody2D;
+  public Sprite newSprite; // hình chết
+  public bool isAlive; // kiểm tra còn sống hay không
+  private Vector2 originalPosition; // vị trí ban đầu
+
   public GameObject bombPrefab;  // Prefab của quả bom
   public float throwForce = 5f;  // Lực ném quả bom
   public int bombLifetime = 2;  // Thời gian tồn tại của quả bom
 
   private void Start()
   {
+    isAlive = true;
     InvokeRepeating("ThrowBomb", 1f, 6f);  // Gọi hàm ThrowBomb mỗi 3 giây sau 1 giây
   }
 
@@ -24,4 +31,28 @@ public class monterBoob : MonoBehaviour
 
     Destroy(bomb, bombLifetime); // Hủy quả bom sau thời gian bombLifetime
   }
+
+  private void OnCollisionEnter2D(Collision2D collision)
+  {
+    if (collision.gameObject.CompareTag("Player"))
+    {
+      var direction = collision.GetContact(0).normal;
+      // chạm dưới chân Player
+      if (Mathf.Round(direction.y) == -1)
+      {
+        // chuyển thành hình chết
+        GetComponent<SpriteRenderer>().sprite = newSprite;
+        // tắt Animation
+        GetComponent<Animator>().enabled = false;
+        // tắt chuyển động
+        isAlive = false;
+        // bật trigger, đi xuống nền
+        GetComponent<BoxCollider2D>().isTrigger = true;
+        originalPosition = transform.position;
+        // xóa khỏi game
+        Destroy(gameObject, 1);
+      }
+    }
+  }
+
 }

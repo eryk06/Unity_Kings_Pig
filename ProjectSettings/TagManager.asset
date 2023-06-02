@@ -6,6 +6,10 @@ TagManager:
   tags:
   - San
   - Cannon
+  - Diamond
+  - NextLevel
+  - Enemy
+  - CannonBall
   layers:
   - Default
   - TransparentFX
