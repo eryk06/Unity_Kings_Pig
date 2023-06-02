@@ -9,13 +9,13 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3423678445704179272}
-  - component: {fileID: 2902948964370663041}
+  - component: {fileID: 6285257138445240995}
   - component: {fileID: 3423678445704179273}
   - component: {fileID: 3423678445704179275}
   - component: {fileID: 3423678445704179285}
   - component: {fileID: 3423678445704179287}
   m_Layer: 0
-  m_Name: Boss
+  m_Name: BossS2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -36,7 +36,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2902948964370663041
+--- !u!114 &6285257138445240995
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -45,12 +45,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 3423678445704179278}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fc3b8f18942f2c64ba13b65efa2c0066, type: 3}
+  m_Script: {fileID: 11500000, guid: c51de1e56dcdc73408cf45d13b973f15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 5
-  moveDistance: 10
-  scaleTime: 5
+  speed: 5
+  isRight: 0
+  left: 0
+  right: 0
+  isBottom: 0
+  top: 0
+  bottom: 0
+  mario: {fileID: 0}
 --- !u!212 &3423678445704179273
 SpriteRenderer:
   m_ObjectHideFlags: 0
