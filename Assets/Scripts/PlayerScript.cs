@@ -2,22 +2,22 @@ using UnityEngine;
 
 public class PlayerScript : MonoBehaviour
 {
-  private bool isALive;
-  private float speed;
-  public bool isNen;
-  private new Rigidbody2D rigidbody2D;
-  public bool isRight;
+    private bool isALive;
+    private float speed;
+    public bool isNen;
+    private new Rigidbody2D rigidbody2D;
+    public bool isRight;
 
-  // animator
-  private Animator animator;
-  // Start is called before the first frame update
-  void Start()
-  {
-    isALive = true;
-    rigidbody2D = GetComponent<Rigidbody2D>();
-    animator = GetComponent<Animator>();
+    // animator
+    private Animator animator;
+    // Start is called before the first frame update
+    void Start()
+    {
+        isALive = true;
+        rigidbody2D = GetComponent<Rigidbody2D>();
+        animator = GetComponent<Animator>();
 
-  }
+    }
 
   // Update is called once per frame
   void Update()
@@ -60,22 +60,21 @@ public class PlayerScript : MonoBehaviour
       transform.Translate(Vector3.left * 15f * Time.deltaTime);
     }
 
-    if (Input.GetKeyDown(KeyCode.UpArrow))
-    {
-      rigidbody2D.AddForce(new Vector2(0, 560));
-      isNen = false;
+        if (Input.GetKeyDown(KeyCode.UpArrow))
+        {
+            rigidbody2D.AddForce(new Vector2(0, 560));
+            isNen = false;
+        }
+        if (!isNen)
+        {
+            animator.SetBool("isJump", true);
+        }
     }
-    if (!isNen)
-    {
-      animator.SetBool("isJump", true);
-    }
-  }
 
-  private void OnCollisionEnter2D(Collision2D collision)
-  {
-    if (collision.gameObject.CompareTag("San"))
-    {
-      isNen = true;
+    private void OnCollisionEnter2D(Collision2D collision) {
+        if (collision.gameObject.CompareTag("San"))
+        {
+            isNen = true;
+        }
     }
-  }
 }

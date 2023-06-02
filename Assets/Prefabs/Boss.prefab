@@ -9,10 +9,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3423678445704179272}
+  - component: {fileID: 2902948964370663041}
   - component: {fileID: 3423678445704179273}
   - component: {fileID: 3423678445704179275}
   - component: {fileID: 3423678445704179285}
-  - component: {fileID: 3423678445704179284}
   - component: {fileID: 3423678445704179287}
   m_Layer: 0
   m_Name: Boss
@@ -36,6 +36,21 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2902948964370663041
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3423678445704179278}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc3b8f18942f2c64ba13b65efa2c0066, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveSpeed: 5
+  moveDistance: 10
+  scaleTime: 5
 --- !u!212 &3423678445704179273
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -135,24 +150,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.19, y: 0.19}
   m_EdgeRadius: 0
---- !u!114 &3423678445704179284
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3423678445704179278}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f5ccd4ca28bac754084013c154f6cb78, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  bombPrefab: {fileID: 4054575779718769569, guid: 429f80f6402985f4d9f8fd68c482a2cb, type: 3}
-  throwForce: 15
-  bombLifetime: 5
-  throwInterval: 3
-  jumpForce: 15
-  jumpCount: 10000
 --- !u!50 &3423678445704179287
 Rigidbody2D:
   serializedVersion: 4
@@ -173,4 +170,4 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
