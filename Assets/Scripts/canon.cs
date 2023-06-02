@@ -4,8 +4,8 @@ using System.Collections;
 public class canon : MonoBehaviour
 {
     public GameObject bulletPrefab;
-    public float fireRate = 0.5f;
-    public float bulletLifetime = 3f;
+    public int fireRate = 12;
+    public int bulletLifetime = 3;
 
     private bool isFiring = false;
 
@@ -29,6 +29,6 @@ public class canon : MonoBehaviour
         Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
         rb.velocity = new Vector2(-5f, 0f);
 
-        Destroy(bullet, bulletLifetime);
+        Destroy(bullet, 5);
     }
 }
