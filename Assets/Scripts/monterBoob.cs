@@ -2,26 +2,26 @@
 
 public class monterBoob : MonoBehaviour
 {
-    public GameObject bombPrefab;  // Prefab của quả bom
-    public float throwForce = 5f;  // Lực ném quả bom
-    public int bombLifetime = 2;  // Thời gian tồn tại của quả bom
+  public GameObject bombPrefab;  // Prefab của quả bom
+  public float throwForce = 5f;  // Lực ném quả bom
+  public int bombLifetime = 2;  // Thời gian tồn tại của quả bom
 
-    private void Start()
-    {
-        InvokeRepeating("ThrowBomb", 1f, 6f);  // Gọi hàm ThrowBomb mỗi 3 giây sau 1 giây
-    }
+  private void Start()
+  {
+    InvokeRepeating("ThrowBomb", 1f, 6f);  // Gọi hàm ThrowBomb mỗi 3 giây sau 1 giây
+  }
 
-    void ThrowBomb()
-    {
-        Vector2 spawnPosition = (Vector2)transform.position - new Vector2(1f, 0f); // Vị trí quả bom sẽ được tạo ra
-        GameObject bomb = Instantiate(bombPrefab, spawnPosition, Quaternion.identity);
+  void ThrowBomb()
+  {
+    Vector2 spawnPosition = (Vector2)transform.position - new Vector2(1f, 0f); // Vị trí quả bom sẽ được tạo ra
+    GameObject bomb = Instantiate(bombPrefab, spawnPosition, Quaternion.identity);
 
-        Rigidbody2D bombRigidbody = bomb.AddComponent<Rigidbody2D>();
-        CircleCollider2D bombCollider = bomb.AddComponent<CircleCollider2D>();
-       
+    Rigidbody2D bombRigidbody = bomb.AddComponent<Rigidbody2D>();
+    CircleCollider2D bombCollider = bomb.AddComponent<CircleCollider2D>();
 
-        bombRigidbody.AddForce(new Vector2(-throwForce, 0f), ForceMode2D.Impulse); // Hướng lực ném qua bên trái
 
-        Destroy(bomb, bombLifetime); // Hủy quả bom sau thời gian bombLifetime
-    }
+    bombRigidbody.AddForce(new Vector2(-throwForce, 0f), ForceMode2D.Impulse); // Hướng lực ném qua bên trái
+
+    Destroy(bomb, bombLifetime); // Hủy quả bom sau thời gian bombLifetime
+  }
 }
