@@ -32,5 +32,12 @@ public class monterBoob : MonoBehaviour
     Destroy(bomb, bombLifetime); // Hủy quả bom sau thời gian bombLifetime
   }
 
-
+  private void OnCollisionEnter2D(Collision2D collision)
+  {
+    if (collision.collider.tag == "Gietquai")
+    {
+      Destroy(gameObject);
+    }
+  }
+  
 }

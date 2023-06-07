@@ -131,6 +131,12 @@ public class monterBoss : MonoBehaviour
         Destroy(gameObject, 1);
       }
     }
+
+    if (collision.collider.tag == "Gietquai")
+    {
+      Destroy(gameObject);
+    }
+
   }
 
 }

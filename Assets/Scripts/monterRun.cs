@@ -22,42 +22,50 @@ public class monterRun : MonoBehaviour
   {
     if (!isAlive) return;
 
-        var positionEnemy = transform.position.x;
-        var positionPlayer = player.transform.position.x;
+    var positionEnemy = transform.position.x;
+    var positionPlayer = player.transform.position.x;
 
-        if (positionPlayer > start && positionPlayer < end)
-        {
-            if (positionPlayer < positionEnemy) isRight = false;
-            else isRight = true;
-        }
+    if (positionPlayer > start && positionPlayer < end)
+    {
+      if (positionPlayer < positionEnemy) isRight = false;
+      else isRight = true;
+    }
 
-        if (positionEnemy < start)
-        {
-            isRight = true;
-        }
-        if (positionEnemy > end)
-        {
-            isRight = false;
-        }
+    if (positionEnemy < start)
+    {
+      isRight = true;
+    }
+    if (positionEnemy > end)
+    {
+      isRight = false;
+    }
 
-        Vector3 vector3;
-        if (isRight)
-        {
-            Vector2 scale = transform.localScale;
-            scale.x *= scale.x > 0 ? -1 : 1;
-            transform.localScale = scale;
+    Vector3 vector3;
+    if (isRight)
+    {
+      Vector2 scale = transform.localScale;
+      scale.x *= scale.x > 0 ? -1 : 1;
+      transform.localScale = scale;
 
-            vector3 = new Vector3(1, 0, 0);
-        }
-        else
-        {
-            Vector2 scale = transform.localScale;
-            scale.x *= scale.x > 0 ? 1 : -1;
-            transform.localScale = scale;
+      vector3 = new Vector3(1, 0, 0);
+    }
+    else
+    {
+      Vector2 scale = transform.localScale;
+      scale.x *= scale.x > 0 ? 1 : -1;
+      transform.localScale = scale;
 
-            vector3 = new Vector3(-1, 0, 0);
-        }
-        transform.Translate(vector3 * speed * Time.deltaTime);
+      vector3 = new Vector3(-1, 0, 0);
+    }
+    transform.Translate(vector3 * speed * Time.deltaTime);
+  }
+
+  private void OnCollisionEnter2D(Collision2D collision)
+  {
+    if (collision.collider.tag == "Gietquai")
+    {
+      Destroy(gameObject);
+    }
   }
 
 }
