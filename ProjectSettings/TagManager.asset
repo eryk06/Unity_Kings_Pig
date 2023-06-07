@@ -11,6 +11,7 @@ TagManager:
   - Enemy
   - CannonBall
   - HP
+  - Gietquai
   layers:
   - Default
   - TransparentFX
