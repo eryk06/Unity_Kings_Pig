@@ -8,6 +8,7 @@ using UnityEngine.SceneManagement;
 
 public class PlayerScript : MonoBehaviour
 {
+  private bool isALive;
   private float speed;
   public bool isNen;
   private new Rigidbody2D rigidbody2D;
@@ -15,14 +16,16 @@ public class PlayerScript : MonoBehaviour
   public AudioClip diamondClip, hpClip;
   private int countPoint = 0;
   private int countHPPoint = 3;
-  public TMP_Text txtDiamond, txtHP , txtTime;
+  public TMP_Text txtDiamond, txtHP, txtTime;
   private int time = 0;
   private AudioSource audioSource;
   public GameObject menu;
   private bool Play = true;
   public GameObject otherGameObject;
   private BoxCollider2D boxCollider;
-  private void Awake() {
+
+  private void Awake()
+  {
     boxCollider = otherGameObject.GetComponent<BoxCollider2D>();
   }
 
@@ -34,10 +37,12 @@ public class PlayerScript : MonoBehaviour
     rigidbody2D = GetComponent<Rigidbody2D>();
     animator = GetComponent<Animator>();
     audioSource = GetComponent<AudioSource>();
-    txtDiamond.text = countPoint + " ";
-    txtHP.text = countHPPoint + " ";
-    txtTime.text = time + " ";
-    StartCoroutine(Updatetime());
+    txtDiamond.text = "x " + countPoint;
+    txtHP.text = "x " + countHPPoint;
+    isALive = true;
+    time = 300;
+    txtTime.text = time + "";
+    StartCoroutine(UpdateTime());
   }
 
   // Update is called once per frame
@@ -99,41 +104,36 @@ public class PlayerScript : MonoBehaviour
     }
   }
 
-  IEnumerator Updatetime()
-  {
-    while (true)
-      {
-        time++;
-        txtTime.text = time + "s";
-        yield return new WaitForSeconds(1);
-      }
-  }
-
   private void OnCollisionEnter2D(Collision2D collision)
   {
     if (collision.gameObject.CompareTag("San"))
     {
       isNen = true;
     }
-    if (collision.gameObject.CompareTag("Enemy"))
-    {
-      Destroy(collision.gameObject);
-    }
+    // if (collision.gameObject.CompareTag("Enemy"))
+    // {
+    //   countHPPoint -= 1;
+    //   txtHP.text = "x " + countHPPoint;
+    //   if (countHPPoint == 0)
+    //   {
+    //     Home();
+    //   }
+    // }
   }
 
   public void Menu()
   {
     if (Play)
     {
-        menu.SetActive(true);
-        Time.timeScale = 0;
-        Play = false;
+      menu.SetActive(true);
+      Time.timeScale = 0;
+      Play = false;
     }
     else
     {
-        menu.SetActive(false);
-        Time.timeScale = 1;
-        Play = true;
+      menu.SetActive(false);
+      Time.timeScale = 1;
+      Play = true;
     }
   }
 
@@ -143,7 +143,7 @@ public class PlayerScript : MonoBehaviour
     if (name.Equals("Diamond"))
     {
       countPoint += 10;
-      txtDiamond.text = countPoint + " ";
+      txtDiamond.text = "x " + countPoint;
       PlayClip(diamondClip);
       // xóa mất kim cương
       Destroy(collision.gameObject);
@@ -151,7 +151,7 @@ public class PlayerScript : MonoBehaviour
     if (name.Equals("HP"))
     {
       countHPPoint += 1;
-      txtHP.text = countHPPoint + " ";
+      txtHP.text = "x " + countHPPoint;
       PlayClip(hpClip);
       // xóa mất trái tim
       Destroy(collision.gameObject);
@@ -192,4 +192,18 @@ public class PlayerScript : MonoBehaviour
     Play = true;
   }
 
+  IEnumerator UpdateTime()
+  {
+    while (isALive)
+    {
+      time--;
+      txtTime.text = time + "";
+      yield return new WaitForSeconds(1);
+      if (time == 0)
+      {
+        Home();
+        Time.timeScale = 0;
+      }
+    }
+  }
 }
