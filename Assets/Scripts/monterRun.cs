@@ -60,29 +60,6 @@ public class monterRun : MonoBehaviour
         transform.Translate(vector3 * speed * Time.deltaTime);
   }
 
-  private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.gameObject.CompareTag("Player"))
-        {
-            var direction = collision.GetContact(0).normal;
-            // chạm dưới chân Player
-            if (Mathf.Round(direction.y) == -1)
-            {
-                // chuyển thành hình chết
-                GetComponent<SpriteRenderer>().sprite = newSprite;
-                // tắt Animation
-                GetComponent<Animator>().enabled = false;
-                // tắt chuyển động
-                isAlive = false;
-                // bật trigger, đi xuống nền
-                GetComponent<BoxCollider2D>().isTrigger = true;
-                originalPosition = transform.position;
-                // xóa khỏi game
-                Destroy(gameObject, 1);
-            }
-        }
-    }
-
 }
 
 

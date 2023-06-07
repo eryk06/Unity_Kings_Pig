@@ -1,10 +1,13 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
 using System.Text;
+using UnityEngine.SceneManagement;
 
 public class PlayerScript : MonoBehaviour
 {
-  private bool isALive;
   private float speed;
   public bool isNen;
   private new Rigidbody2D rigidbody2D;
@@ -12,20 +15,29 @@ public class PlayerScript : MonoBehaviour
   public AudioClip diamondClip, hpClip;
   private int countPoint = 0;
   private int countHPPoint = 3;
-  public TMP_Text txtDiamond, txtHP;
+  public TMP_Text txtDiamond, txtHP , txtTime;
+  private int time = 0;
   private AudioSource audioSource;
+  public GameObject menu;
+  private bool Play = true;
+  public GameObject otherGameObject;
+  private BoxCollider2D boxCollider;
+  private void Awake() {
+    boxCollider = otherGameObject.GetComponent<BoxCollider2D>();
+  }
 
   // animator
   private Animator animator;
   // Start is called before the first frame update
   void Start()
   {
-    isALive = true;
     rigidbody2D = GetComponent<Rigidbody2D>();
     animator = GetComponent<Animator>();
     audioSource = GetComponent<AudioSource>();
-    txtDiamond.text = countPoint + " x";
-    txtHP.text = countHPPoint + " x";
+    txtDiamond.text = countPoint + " ";
+    txtHP.text = countHPPoint + " ";
+    txtTime.text = time + " ";
+    StartCoroutine(Updatetime());
   }
 
   // Update is called once per frame
@@ -58,6 +70,11 @@ public class PlayerScript : MonoBehaviour
       transform.Translate(Vector3.right * 15f * Time.deltaTime);
     }
 
+    if (Input.GetKeyDown(KeyCode.F))
+    {
+      Menu();
+    }
+
     if (Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A))
     {
       if (isRight == true)
@@ -82,6 +99,16 @@ public class PlayerScript : MonoBehaviour
     }
   }
 
+  IEnumerator Updatetime()
+  {
+    while (true)
+      {
+        time++;
+        txtTime.text = time + "s";
+        yield return new WaitForSeconds(1);
+      }
+  }
+
   private void OnCollisionEnter2D(Collision2D collision)
   {
     if (collision.gameObject.CompareTag("San"))
@@ -90,12 +117,23 @@ public class PlayerScript : MonoBehaviour
     }
     if (collision.gameObject.CompareTag("Enemy"))
     {
-      countHPPoint -= 1;
-      txtHP.text = countHPPoint + " x";
-      if (countHPPoint == 0)
-      {
-        QuitGame();
-      }
+      Destroy(collision.gameObject);
+    }
+  }
+
+  public void Menu()
+  {
+    if (Play)
+    {
+        menu.SetActive(true);
+        Time.timeScale = 0;
+        Play = false;
+    }
+    else
+    {
+        menu.SetActive(false);
+        Time.timeScale = 1;
+        Play = true;
     }
   }
 
@@ -105,7 +143,7 @@ public class PlayerScript : MonoBehaviour
     if (name.Equals("Diamond"))
     {
       countPoint += 10;
-      txtDiamond.text = countPoint + " x";
+      txtDiamond.text = countPoint + " ";
       PlayClip(diamondClip);
       // xóa mất kim cương
       Destroy(collision.gameObject);
@@ -113,7 +151,7 @@ public class PlayerScript : MonoBehaviour
     if (name.Equals("HP"))
     {
       countHPPoint += 1;
-      txtHP.text = countHPPoint + " x";
+      txtHP.text = countHPPoint + " ";
       PlayClip(hpClip);
       // xóa mất trái tim
       Destroy(collision.gameObject);
@@ -130,19 +168,28 @@ public class PlayerScript : MonoBehaviour
     if (Input.GetButtonDown("Fire1"))
     {
       animator.SetBool("Attack", true);
+      boxCollider.enabled = true;
     }
     if (Input.GetButtonUp("Fire1"))
     {
       animator.SetBool("Attack", false);
+      boxCollider.enabled = false;
     }
   }
 
-  public void QuitGame()
+  public void Home()
   {
-#if UNITY_EDITOR
-    UnityEditor.EditorApplication.isPlaying = false;
-#else
-            Application.Quit();
-#endif
+    menu.SetActive(false);
+    Time.timeScale = 1;
+    Play = true;
+    SceneManager.LoadScene(0);
   }
+
+  public void RestartGame()
+  {
+    SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    Time.timeScale = 1;
+    Play = true;
+  }
+
 }
