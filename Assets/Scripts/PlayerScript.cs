@@ -15,7 +15,7 @@ public class PlayerScript : MonoBehaviour
   public bool isRight;
   public AudioClip diamondClip, hpClip;
   private int countPoint = 0;
-  private int countHPPoint = 3;
+  private int countHPPoint = 10;
   public TMP_Text txtDiamond, txtHP, txtTime;
   private int time = 0;
   private AudioSource audioSource;
@@ -23,6 +23,10 @@ public class PlayerScript : MonoBehaviour
   private bool Play = true;
   public GameObject otherGameObject;
   private BoxCollider2D boxCollider;
+
+  public int jumpForce;
+  public int maxHeight;
+  private bool canJump = true;
 
   private void Awake()
   {
@@ -34,13 +38,15 @@ public class PlayerScript : MonoBehaviour
   // Start is called before the first frame update
   void Start()
   {
+    jumpForce = 10;
+    maxHeight = 100;
     rigidbody2D = GetComponent<Rigidbody2D>();
     animator = GetComponent<Animator>();
     audioSource = GetComponent<AudioSource>();
     txtDiamond.text = "x " + countPoint;
     txtHP.text = "x " + countHPPoint;
     isALive = true;
-    time = 300;
+    time = 500;
     txtTime.text = time + "";
     StartCoroutine(UpdateTime());
   }
@@ -48,6 +54,8 @@ public class PlayerScript : MonoBehaviour
   // Update is called once per frame
   void Update()
   {
+    jumpForce = 10;
+    maxHeight = 100;
     animator.SetBool("isRunning", false);
     animator.SetBool("isJump", false);
 
@@ -93,9 +101,9 @@ public class PlayerScript : MonoBehaviour
       transform.Translate(Vector3.left * 15f * Time.deltaTime);
     }
 
-    if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W))
+    if (Input.GetKeyDown(KeyCode.UpArrow) && canJump || Input.GetKeyDown(KeyCode.W) && canJump)
     {
-      rigidbody2D.AddForce(new Vector2(0, 560));
+      Jump();
       isNen = false;
     }
     if (!isNen)
@@ -104,21 +112,57 @@ public class PlayerScript : MonoBehaviour
     }
   }
 
+  private void Jump()
+  {
+    Rigidbody2D rb = GetComponent<Rigidbody2D>();
+    if (rb != null)
+    {
+      if (transform.position.y < maxHeight)
+      {
+        rb.velocity = new Vector2(rb.velocity.x, jumpForce);
+      }
+    }
+  }
+
   private void OnCollisionEnter2D(Collision2D collision)
   {
     if (collision.gameObject.CompareTag("San"))
     {
       isNen = true;
+      canJump = true;
     }
-    // if (collision.gameObject.CompareTag("Enemy"))
-    // {
-    //   countHPPoint -= 1;
-    //   txtHP.text = "x " + countHPPoint;
-    //   if (countHPPoint == 0)
-    //   {
-    //     Home();
-    //   }
-    // }
+    if (collision.gameObject.CompareTag("Home"))
+    {
+      Home();
+    }
+    if (collision.gameObject.CompareTag("Enemy"))
+    {
+      countHPPoint -= 1;
+      txtHP.text = "x " + countHPPoint;
+      if (countHPPoint == 0)
+      {
+        Home();
+      }
+    }
+    if (collision.gameObject.CompareTag("CannonBall") || collision.gameObject.CompareTag("bom"))
+    {
+      countHPPoint -= 1;
+      txtHP.text = "x " + countHPPoint;
+      if (countHPPoint == 0)
+      {
+        Home();
+      }
+    }
+    if (collision.collider.CompareTag("NextLevel"))
+    {
+      SceneManager.LoadScene("Scene2");
+      Time.timeScale = 1;
+    }
+  }
+
+  private void OnCollisionExit2D(Collision2D collision)
+  {
+    canJump = false;
   }
 
   public void Menu()
@@ -150,7 +194,7 @@ public class PlayerScript : MonoBehaviour
     }
     if (name.Equals("HP"))
     {
-      countHPPoint += 1;
+      countHPPoint += 10;
       txtHP.text = "x " + countHPPoint;
       PlayClip(hpClip);
       // xóa mất trái tim

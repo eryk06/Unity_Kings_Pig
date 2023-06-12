@@ -9,14 +9,10 @@ public class monterBossUpdate : MonoBehaviour
     public bool isRight;
     public float left, right;
 
-    public bool isBottom;
-    public float top, bottom;
-
-
     private float timeSpawn; // thời gian sẽ bắn
     private float time; // đếm thời gian
 
-    public GameObject mario; // mario
+    public GameObject player;
 
 
 
@@ -33,15 +29,15 @@ public class monterBossUpdate : MonoBehaviour
     {
         float positionX = transform.position.x; // global
         float positionY = transform.position.y; // global
-        float marioX = mario.transform.position.x; // vị trí mario
+        float playerX = player.transform.position.x; // vị trí player
 
-        if (marioX > left && marioX < right)
+        if (playerX > left && playerX < right)
         {
-            if (marioX < positionX)
+            if (playerX < positionX)
             {
                 isRight = false;
             }
-            else if (marioX > positionX)
+            else if (playerX > positionX)
             {
                 isRight = true;
             }
@@ -56,15 +52,6 @@ public class monterBossUpdate : MonoBehaviour
             isRight = false;
         }
 
-        if (positionY < top)
-        {
-            isBottom = true;
-        }
-        if (positionY > bottom)
-        {
-            isBottom = false;
-        }
-
         Vector3 vector3;
 
         if (isRight)
@@ -73,7 +60,7 @@ public class monterBossUpdate : MonoBehaviour
             scale.x *= scale.x > 0 ? -1 : 1;
             transform.localScale = scale;
 
-            vector3 = new Vector3(1, 5, 0);
+            vector3 = new Vector3(1, 2, 0);
         }
         else
         {
