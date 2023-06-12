@@ -49,8 +49,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bombPrefab: {fileID: 4054575779718769569, guid: 142c0ac0571e3534389e9eb3f05a5356, type: 3}
-  throwForce: 5
-  bombLifetime: 5
+  throwForce: 30
+  bombLifetime: 6
   throwInterval: 5
   jumpForce: 12
   jumpCount: 1000

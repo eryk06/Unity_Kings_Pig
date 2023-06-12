@@ -29,6 +29,6 @@ public class canon : MonoBehaviour
     Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
     rb.velocity = new Vector2(-5f, 0f);
 
-    Destroy(bullet, 5);
+    Destroy(bullet, 3);
   }
 }

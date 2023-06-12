@@ -12,6 +12,8 @@ TagManager:
   - CannonBall
   - HP
   - Gietquai
+  - bom
+  - Home
   layers:
   - Default
   - TransparentFX

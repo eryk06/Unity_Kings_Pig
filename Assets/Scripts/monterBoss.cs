@@ -81,6 +81,7 @@ public class monterBoss : MonoBehaviour
     bombRigidbody.AddForce(new Vector2(-throwForce, 0f), ForceMode2D.Impulse);
 
     Destroy(bomb, bombLifetime);
+    Destroy(bomb, 2);
   }
 
   void ThrowBombRight()

@@ -9,13 +9,13 @@ public class monterBoob : MonoBehaviour
   private Vector2 originalPosition; // vị trí ban đầu
 
   public GameObject bombPrefab;  // Prefab của quả bom
-  public float throwForce = 5f;  // Lực ném quả bom
+  public float throwForce = 6f;  // Lực ném quả bom
   public int bombLifetime = 2;  // Thời gian tồn tại của quả bom
 
   private void Start()
   {
     isAlive = true;
-    InvokeRepeating("ThrowBomb", 1f, 6f);  // Gọi hàm ThrowBomb mỗi 3 giây sau 1 giây
+    InvokeRepeating("ThrowBomb", 2f, 6f);  // Gọi hàm ThrowBomb mỗi 3 giây sau 1 giây
   }
 
   void ThrowBomb()

@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 3423678445704179287}
   m_Layer: 0
   m_Name: BossS2
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -29,7 +29,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3423678445704179278}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 34.17, y: 2.43, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 22, y: 22, z: 1.4666667}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -55,7 +55,7 @@ MonoBehaviour:
   isBottom: 0
   top: 0
   bottom: 0
-  mario: {fileID: 0}
+  player: {fileID: 0}
 --- !u!212 &3423678445704179273
 SpriteRenderer:
   m_ObjectHideFlags: 0
