@@ -1,28 +1,26 @@
 ﻿using UnityEngine;
 
-public class monterBoss : MonoBehaviour
-{
-  public GameObject bombPrefab;  // Prefab của quả bom
-  public float throwForce = 5f;  // Lực ném quả bom
-  public float bombLifetime = 2f;  // Thời gian tồn tại của quả bom
-  public float throwInterval = 3f;  // Khoảng thời gian giữa các lần ném bom
-  public float jumpForce = 10f;  // Lực nhảy của boss
-  public int jumpCount = 5;  // Số lần nhảy của boss
+public class monterBoss : MonoBehaviour {
+  public GameObject bombPrefab;   // Prefab của quả bom
+  public float throwForce = 5f;   // Lực ném quả bom
+  public float bombLifetime = 2f; // Thời gian tồn tại của quả bom
+  public float throwInterval = 3f; // Khoảng thời gian giữa các lần ném bom
+  public float jumpForce = 10f; // Lực nhảy của boss
+  public int jumpCount = 5;     // Số lần nhảy của boss
 
-  private int currentJumpCount = 0;  // Biến đếm số lần nhảy đã thực hiện
+  private int currentJumpCount = 0; // Biến đếm số lần nhảy đã thực hiện
 
   Collider2D objectCollider;
   private new Rigidbody2D rigidbody2D;
-  public Sprite newSprite; // hình chết
-  public bool isAlive; // kiểm tra còn sống hay không
+  public Sprite newSprite;          // hình chết
+  public bool isAlive;              // kiểm tra còn sống hay không
   private Vector2 originalPosition; // vị trí ban đầu
   public float speed;
   public float start, end;
   public bool isRight;
   public GameObject player;
 
-  private void Start()
-  {
+  private void Start() {
     isAlive = true;
     InvokeRepeating("ThrowBombLeft", 1f, throwInterval);
     InvokeRepeating("ThrowBombRight", throwInterval / 2f, throwInterval);
@@ -30,50 +28,47 @@ public class monterBoss : MonoBehaviour
   }
 
   private void Update() {
-    if (!isAlive) return;
+    if (!isAlive)
+      return;
 
-        var positionEnemy = transform.position.x;
-        var positionPlayer = player.transform.position.x;
+    var positionEnemy = transform.position.x;
+    var positionPlayer = player.transform.position.x;
 
-        if (positionPlayer > start && positionPlayer < end)
-        {
-            if (positionPlayer < positionEnemy) isRight = false;
-            else isRight = true;
-        }
+    if (positionPlayer > start && positionPlayer < end) {
+      if (positionPlayer < positionEnemy)
+        isRight = false;
+      else
+        isRight = true;
+    }
 
-        if (positionEnemy < start)
-        {
-            isRight = true;
-        }
-        if (positionEnemy > end)
-        {
-            isRight = false;
-        }
+    if (positionEnemy < start) {
+      isRight = true;
+    }
+    if (positionEnemy > end) {
+      isRight = false;
+    }
 
-        Vector3 vector3;
-        if (isRight)
-        {
-            Vector2 scale = transform.localScale;
-            scale.x *= scale.x > 0 ? -1 : 1;
-            transform.localScale = scale;
+    Vector3 vector3;
+    if (isRight) {
+      Vector2 scale = transform.localScale;
+      scale.x *= scale.x > 0 ? -1 : 1;
+      transform.localScale = scale;
 
-            vector3 = new Vector3(1, 0, 0);
-        }
-        else
-        {
-            Vector2 scale = transform.localScale;
-            scale.x *= scale.x > 0 ? 1 : -1;
-            transform.localScale = scale;
+      vector3 = new Vector3(1, 0, 0);
+    } else {
+      Vector2 scale = transform.localScale;
+      scale.x *= scale.x > 0 ? 1 : -1;
+      transform.localScale = scale;
 
-            vector3 = new Vector3(-1, 0, 0);
-        }
-        transform.Translate(vector3 * speed * Time.deltaTime);
+      vector3 = new Vector3(-1, 0, 0);
+    }
+    transform.Translate(vector3 * speed * Time.deltaTime);
   }
 
-  void ThrowBombLeft()
-  {
+  void ThrowBombLeft() {
     Vector2 spawnPosition = (Vector2)transform.position - new Vector2(1f, 0f);
-    GameObject bomb = Instantiate(bombPrefab, spawnPosition, Quaternion.identity);
+    GameObject bomb =
+        Instantiate(bombPrefab, spawnPosition, Quaternion.identity);
 
     Rigidbody2D bombRigidbody = bomb.AddComponent<Rigidbody2D>();
     CircleCollider2D bombCollider = bomb.AddComponent<CircleCollider2D>();
@@ -84,10 +79,10 @@ public class monterBoss : MonoBehaviour
     Destroy(bomb, 2);
   }
 
-  void ThrowBombRight()
-  {
+  void ThrowBombRight() {
     Vector2 spawnPosition = (Vector2)transform.position + new Vector2(1f, 0f);
-    GameObject bomb = Instantiate(bombPrefab, spawnPosition, Quaternion.identity);
+    GameObject bomb =
+        Instantiate(bombPrefab, spawnPosition, Quaternion.identity);
 
     Rigidbody2D bombRigidbody = bomb.AddComponent<Rigidbody2D>();
     CircleCollider2D bombCollider = bomb.AddComponent<CircleCollider2D>();
@@ -97,28 +92,21 @@ public class monterBoss : MonoBehaviour
     Destroy(bomb, bombLifetime);
   }
 
-  void Jump()
-  {
-    if (currentJumpCount < jumpCount)
-    {
+  void Jump() {
+    if (currentJumpCount < jumpCount) {
       Rigidbody2D bossRigidbody = GetComponent<Rigidbody2D>();
       bossRigidbody.AddForce(new Vector2(0f, jumpForce), ForceMode2D.Impulse);
       currentJumpCount++;
-    }
-    else
-    {
-      CancelInvoke("Jump");  // Hủy việc gọi nhảy khi đã đạt số lần nhảy tối đa
+    } else {
+      CancelInvoke("Jump"); // Hủy việc gọi nhảy khi đã đạt số lần nhảy tối đa
     }
   }
 
-  private void OnCollisionEnter2D(Collision2D collision)
-  {
-    if (collision.gameObject.CompareTag("Player"))
-    {
+  private void OnCollisionEnter2D(Collision2D collision) {
+    if (collision.gameObject.CompareTag("Player")) {
       var direction = collision.GetContact(0).normal;
       // chạm dưới chân Player
-      if (Mathf.Round(direction.y) == -1)
-      {
+      if (Mathf.Round(direction.y) == -1) {
         // chuyển thành hình chết
         GetComponent<SpriteRenderer>().sprite = newSprite;
         // tắt Animation
@@ -133,11 +121,8 @@ public class monterBoss : MonoBehaviour
       }
     }
 
-    if (collision.collider.tag == "Gietquai")
-    {
+    if (collision.collider.tag == "Gietquai") {
       Destroy(gameObject);
     }
-
   }
-
 }

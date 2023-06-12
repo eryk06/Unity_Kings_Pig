@@ -6,8 +6,7 @@ using TMPro;
 using System.Text;
 using UnityEngine.SceneManagement;
 
-public class PlayerScript : MonoBehaviour
-{
+public class PlayerScript : MonoBehaviour {
   private bool isALive;
   private float speed;
   public bool isNen;
@@ -28,16 +27,14 @@ public class PlayerScript : MonoBehaviour
   public int maxHeight;
   private bool canJump = true;
 
-  private void Awake()
-  {
+  private void Awake() {
     boxCollider = otherGameObject.GetComponent<BoxCollider2D>();
   }
 
   // animator
   private Animator animator;
   // Start is called before the first frame update
-  void Start()
-  {
+  void Start() {
     jumpForce = 10;
     maxHeight = 100;
     rigidbody2D = GetComponent<Rigidbody2D>();
@@ -52,8 +49,7 @@ public class PlayerScript : MonoBehaviour
   }
 
   // Update is called once per frame
-  void Update()
-  {
+  void Update() {
     jumpForce = 10;
     maxHeight = 100;
     animator.SetBool("isRunning", false);
@@ -63,17 +59,14 @@ public class PlayerScript : MonoBehaviour
 
     Vector2 scale = transform.localScale;
 
-    if (Input.GetKeyDown(KeyCode.Space))
-    {
+    if (Input.GetKeyDown(KeyCode.Space)) {
       var x = transform.position.x + (isRight ? 0.5f : -0.5f);
       var y = transform.position.y;
       var z = transform.position.z;
     }
 
-    if (Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D))
-    {
-      if (isRight == false)
-      {
+    if (Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D)) {
+      if (isRight == false) {
         scale.x *= scale.x > 0 ? 1 : -1;
         transform.localScale = scale;
         isRight = true;
@@ -83,15 +76,12 @@ public class PlayerScript : MonoBehaviour
       transform.Translate(Vector3.right * 15f * Time.deltaTime);
     }
 
-    if (Input.GetKeyDown(KeyCode.F))
-    {
+    if (Input.GetKeyDown(KeyCode.F)) {
       Menu();
     }
 
-    if (Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A))
-    {
-      if (isRight == true)
-      {
+    if (Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A)) {
+      if (isRight == true) {
         scale.x *= scale.x > 0 ? -1 : 1;
         transform.localScale = scale;
         isRight = false;
@@ -101,99 +91,78 @@ public class PlayerScript : MonoBehaviour
       transform.Translate(Vector3.left * 15f * Time.deltaTime);
     }
 
-    if (Input.GetKeyDown(KeyCode.UpArrow) && canJump || Input.GetKeyDown(KeyCode.W) && canJump)
-    {
+    if (Input.GetKeyDown(KeyCode.UpArrow) && canJump ||
+        Input.GetKeyDown(KeyCode.W) && canJump) {
       Jump();
       isNen = false;
     }
-    if (!isNen)
-    {
+    if (!isNen) {
       animator.SetBool("isJump", true);
     }
   }
 
-  private void Jump()
-  {
+  private void Jump() {
     Rigidbody2D rb = GetComponent<Rigidbody2D>();
-    if (rb != null)
-    {
-      if (transform.position.y < maxHeight)
-      {
+    if (rb != null) {
+      if (transform.position.y < maxHeight) {
         rb.velocity = new Vector2(rb.velocity.x, jumpForce);
       }
     }
   }
 
-  private void OnCollisionEnter2D(Collision2D collision)
-  {
-    if (collision.gameObject.CompareTag("San"))
-    {
+  private void OnCollisionEnter2D(Collision2D collision) {
+    if (collision.gameObject.CompareTag("San")) {
       isNen = true;
       canJump = true;
     }
-    if (collision.gameObject.CompareTag("Home"))
-    {
+    if (collision.gameObject.CompareTag("Home")) {
       Home();
     }
-    if (collision.gameObject.CompareTag("Enemy"))
-    {
+    if (collision.gameObject.CompareTag("Enemy")) {
       countHPPoint -= 1;
       txtHP.text = "x " + countHPPoint;
-      if (countHPPoint == 0)
-      {
+      if (countHPPoint == 0) {
         Home();
       }
     }
-    if (collision.gameObject.CompareTag("CannonBall") || collision.gameObject.CompareTag("bom"))
-    {
+    if (collision.gameObject.CompareTag("CannonBall") ||
+        collision.gameObject.CompareTag("bom")) {
       countHPPoint -= 1;
       txtHP.text = "x " + countHPPoint;
-      if (countHPPoint == 0)
-      {
+      if (countHPPoint == 0) {
         Home();
       }
     }
-    if (collision.collider.CompareTag("NextLevel"))
-    {
+    if (collision.collider.CompareTag("NextLevel")) {
       SceneManager.LoadScene("Scene2");
       Time.timeScale = 1;
     }
   }
 
-  private void OnCollisionExit2D(Collision2D collision)
-  {
-    canJump = false;
-  }
+  private void OnCollisionExit2D(Collision2D collision) { canJump = false; }
 
-  public void Menu()
-  {
-    if (Play)
-    {
+  public void Menu() {
+    if (Play) {
       menu.SetActive(true);
       Time.timeScale = 0;
       Play = false;
-    }
-    else
-    {
+    } else {
       menu.SetActive(false);
       Time.timeScale = 1;
       Play = true;
     }
   }
 
-  private void OnTriggerEnter2D(Collider2D collision)
-  {
+  private void OnTriggerEnter2D(Collider2D collision) {
     var name = collision.gameObject.tag;
-    if (name.Equals("Diamond"))
-    {
+    if (name.Equals("Diamond")) {
       countPoint += 10;
       txtDiamond.text = "x " + countPoint;
       PlayClip(diamondClip);
       // xóa mất kim cương
       Destroy(collision.gameObject);
     }
-    if (name.Equals("HP"))
-    {
+    if (name.Equals("HP")) {
       countHPPoint += 10;
       txtHP.text = "x " + countHPPoint;
       PlayClip(hpClip);
@@ -202,49 +171,38 @@ public class PlayerScript : MonoBehaviour
     }
   }
 
-  private void PlayClip(AudioClip clip)
-  {
-    audioSource.PlayOneShot(clip);
-  }
+  private void PlayClip(AudioClip clip) { audioSource.PlayOneShot(clip); }
 
-  void Attack()
-  {
-    if (Input.GetButtonDown("Fire1"))
-    {
+  void Attack() {
+    if (Input.GetButtonDown("Fire1")) {
       animator.SetBool("Attack", true);
       boxCollider.enabled = true;
     }
-    if (Input.GetButtonUp("Fire1"))
-    {
+    if (Input.GetButtonUp("Fire1")) {
       animator.SetBool("Attack", false);
       boxCollider.enabled = false;
     }
   }
 
-  public void Home()
-  {
+  public void Home() {
     menu.SetActive(false);
     Time.timeScale = 1;
     Play = true;
     SceneManager.LoadScene(0);
   }
 
-  public void RestartGame()
-  {
+  public void RestartGame() {
     SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     Time.timeScale = 1;
     Play = true;
   }
 
-  IEnumerator UpdateTime()
-  {
-    while (isALive)
-    {
+  IEnumerator UpdateTime() {
+    while (isALive) {
       time--;
       txtTime.text = time + "";
       yield return new WaitForSeconds(1);
-      if (time == 0)
-      {
+      if (time == 0) {
         Home();
         Time.timeScale = 0;
       }
